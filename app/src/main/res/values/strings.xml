@@ -10,4 +10,8 @@
     <string name="lbl_Endereco">Endereço</string>
     <string name="lbl_Datas_Especiais">Datas especiais</string>
     <string name="lbl_Grupos">Grupos</string>
+
+    <string name="lbl_Salvar">Salvar</string>
+    <string name="lbl_Alterar">Alterar</string>
+    <string name="lbl_Excluir">Excluir</string>
 </resources>

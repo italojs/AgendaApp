@@ -2,6 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.fastcoding.agenda.ActivityCadContatos">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+
+
+
+    <item
+        android:id="@+id/mni_Acao1"
+        android:title="@string/lbl_Salvar"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/mni_Acao2"
+        android:title="@string/lbl_Excluir"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:visible="false" />
+
+
+
+
 </menu>

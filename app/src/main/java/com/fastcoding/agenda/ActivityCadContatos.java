@@ -70,6 +70,30 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
         adpDatasEspeciais.add("Outros");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater infalter = getMenuInflater();
+        infalter.inflate(R.menu.menu_activity_cad_contatos, menu);
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            case R.id.mni_Acao1:
+                break;
+
+            case R.id.mni_Acao2:
+                break;
+        }
+
+
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onClick(View v) {
