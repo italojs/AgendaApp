@@ -1,12 +1,14 @@
-package com.fastcoding.agenda;
+package com.fastcoding.agenda.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.*;
 import android.view.*;
-import android.content.*;
 
-public class ActivityCadContatos extends AppCompatActivity implements View.OnClickListener {
+import com.fastcoding.agenda.R;
+
+public class ActivityCadContatos extends AppCompatActivity implements View.OnClickListener
+{
 
     private EditText edtNome,edtEmail,edtTelefone,edtEndereco,edtDatasEspeciais,edtGrupos;
 
@@ -15,7 +17,8 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
     private ArrayAdapter<String> adpTipoEmail,adpTipoTelefone, adpTipoEndereco,adpDatasEspeciais ;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cad_contatos);
 
@@ -71,7 +74,8 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater infalter = getMenuInflater();
         infalter.inflate(R.menu.menu_activity_cad_contatos, menu);
 
@@ -80,7 +84,8 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         switch(item.getItemId())
         {
             case R.id.mni_Acao1:
@@ -96,7 +101,8 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
 
 
     }

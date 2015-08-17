@@ -1,11 +1,13 @@
-package com.fastcoding.agenda;
+package com.fastcoding.agenda.dataBase;
 
 /**
  * Created by Italo on 16/08/2015.
  */
-public class ScriptSQL {
+public class ScriptSQL
+{
 
-    public static String getCreateContato(){
+    public static String getCreateContato()
+    {
 
 
         StringBuilder sqlBuilder = new StringBuilder();

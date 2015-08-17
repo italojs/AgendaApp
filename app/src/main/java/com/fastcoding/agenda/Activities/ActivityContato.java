@@ -1,7 +1,5 @@
-package com.fastcoding.agenda;
+package com.fastcoding.agenda.activities;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.*;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,17 +7,23 @@ import android.view.*;
 import android.widget.*;
 import android.database.sqlite.*;
 import android.database.*;
+import com.fastcoding.agenda.dominio.*;
+import com.fastcoding.agenda.dataBase.DataBase;
+import com.fastcoding.agenda.R;
 
-public class ActivityContato extends AppCompatActivity implements View.OnClickListener{
+public class ActivityContato extends AppCompatActivity implements View.OnClickListener
+{
 
     private ImageButton btnAdicionar;
     private EditText edtPesquisa;
     private ListView lstContatos;
-
+    private ArrayAdapter<String> adpContatos;
+    private RepositorioContato repositorioContato;
     private DataBase dataBase;
     private SQLiteDatabase con;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contato);
 
@@ -30,20 +34,23 @@ public class ActivityContato extends AppCompatActivity implements View.OnClickLi
 
         btnAdicionar.setOnClickListener(this);
 
-        try {
-            dataBase = new DataBase(this);//a instância dessa classe é para utilizar os métodos de banco dados
-            con = dataBase.getReadableDatabase();//chama o método que cria o BD e abre
-
-            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-            dlg.setMessage("Conexão efetuada com sucesso!");
-            dlg.setNeutralButton("OK", null);
-            dlg.show();
+        try
+        {
+            dataBase = new DataBase(this);       //a instância dessa classe é para utilizar os métodos de banco dados
+            con = dataBase.getWritableDatabase();//chama o método que cria o BD e abre
 
             Toast.makeText(ActivityContato.this, "Banco conectado.", Toast.LENGTH_SHORT).show();
 
+            repositorioContato = new RepositorioContato(con);
 
+            repositorioContato.testeInserirContatos();
+
+            adpContatos = repositorioContato.buscaContatos(this);
+
+            lstContatos.setAdapter(adpContatos); //preenche o ListView com os dados do ArrayAdapter
         }
-        catch (SQLException ex){
+        catch (SQLException ex)
+        {
             Toast.makeText(ActivityContato.this, "Erro ao criar o Banco de dados\nERRO: " + ex, Toast.LENGTH_SHORT).show();
         }
 
@@ -51,7 +58,8 @@ public class ActivityContato extends AppCompatActivity implements View.OnClickLi
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
 
         Intent it = new Intent(this, ActivityCadContatos.class);
         startActivity(it);
