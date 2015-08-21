@@ -10,6 +10,7 @@ import android.database.*;
 import com.fastcoding.agenda.dominio.*;
 import com.fastcoding.agenda.dataBase.DataBase;
 import com.fastcoding.agenda.R;
+import com.fastcoding.agenda.dominio.entidades.Contato;
 
 public class ActivityContato extends AppCompatActivity implements View.OnClickListener
 {
@@ -17,7 +18,7 @@ public class ActivityContato extends AppCompatActivity implements View.OnClickLi
     private ImageButton btnAdicionar;
     private EditText edtPesquisa;
     private ListView lstContatos;
-    private ArrayAdapter<String> adpContatos;
+    private ArrayAdapter<Contato> adpContatos;
     private RepositorioContato repositorioContato;
     private DataBase dataBase;
     private SQLiteDatabase con;
@@ -39,11 +40,11 @@ public class ActivityContato extends AppCompatActivity implements View.OnClickLi
             dataBase = new DataBase(this);       //a instância dessa classe é para utilizar os métodos de banco dados
             con = dataBase.getWritableDatabase();//chama o método que cria o BD e abre
 
-            Toast.makeText(ActivityContato.this, "Banco conectado.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ActivityContato.this, "Banco conectado.", Toast.LENGTH_SHORT).show();
 
             repositorioContato = new RepositorioContato(con);
 
-            repositorioContato.testeInserirContatos();
+
 
             adpContatos = repositorioContato.buscaContatos(this);
 
@@ -62,6 +63,14 @@ public class ActivityContato extends AppCompatActivity implements View.OnClickLi
     {
 
         Intent it = new Intent(this, ActivityCadContatos.class);
-        startActivity(it);
+        startActivityForResult(it, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        adpContatos = repositorioContato.buscaContatos(this);
+        lstContatos.setAdapter(adpContatos);
     }
 }

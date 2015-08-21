@@ -1,11 +1,18 @@
 package com.fastcoding.agenda.activities;
 
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.*;
 import android.view.*;
 
 import com.fastcoding.agenda.R;
+import com.fastcoding.agenda.dataBase.DataBase;
+import com.fastcoding.agenda.dominio.RepositorioContato;
+import com.fastcoding.agenda.dominio.entidades.Contato;
+
+import java.util.Date;
 
 public class ActivityCadContatos extends AppCompatActivity implements View.OnClickListener
 {
@@ -15,6 +22,11 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
     private Spinner spnTipoEmail,spnTipoTelefone,spnTipoEndereco,spnDatasEspeciais;
 
     private ArrayAdapter<String> adpTipoEmail,adpTipoTelefone, adpTipoEndereco,adpDatasEspeciais ;
+
+    private RepositorioContato repositorioContato;
+    private DataBase dataBase;
+    private SQLiteDatabase con;
+    private Contato contato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -71,6 +83,20 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
         adpDatasEspeciais.add("Aniversário");
         adpDatasEspeciais.add("Data comemorativa");
         adpDatasEspeciais.add("Outros");
+
+        try
+        {
+            dataBase = new DataBase(this);
+            con = dataBase.getWritableDatabase();
+
+            repositorioContato = new RepositorioContato(con);
+
+
+        }
+        catch (SQLException ex)
+        {
+            Toast.makeText(ActivityCadContatos.this, "Erro ao criar o Banco de dados\nERRO: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -89,6 +115,12 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
         switch(item.getItemId())
         {
             case R.id.mni_Acao1:
+                if(contato == null)
+                {
+                    inserir();
+                }
+                finish();
+
                 break;
 
             case R.id.mni_Acao2:
@@ -98,6 +130,34 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void inserir ()
+    {
+        try {
+            contato = new Contato();
+
+            contato.setNome(edtNome.getText().toString());
+            contato.setTelefone(edtTelefone.getText().toString());
+            contato.setEmail(edtEmail.getText().toString());
+            contato.setEndereco(edtEndereco.getText().toString());
+            contato.setGrupos(edtGrupos.getText().toString());
+
+            Date date = new Date();//não entendi muito bem o porque fazer isso
+            contato.setDatasEspeciais(date);
+
+            contato.setTipoTelefone("");
+            contato.setTipoEmail("");
+            contato.setTipoEndereco("");
+            contato.setTipoDatasEspeciais("");
+
+
+            repositorioContato.inserir(contato);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(ActivityCadContatos.this, "Erro ao inserir os dados.\nERRO: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
