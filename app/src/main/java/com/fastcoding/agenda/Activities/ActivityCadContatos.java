@@ -91,7 +91,6 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
 
             repositorioContato = new RepositorioContato(con);
 
-
         }
         catch (SQLException ex)
         {
@@ -141,10 +140,13 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
             contato.setTelefone(edtTelefone.getText().toString());
             contato.setEmail(edtEmail.getText().toString());
             contato.setEndereco(edtEndereco.getText().toString());
-            contato.setGrupos(edtGrupos.getText().toString());
 
             Date date = new Date();//não entendi muito bem o porque fazer isso
             contato.setDatasEspeciais(date);
+
+            contato.setGrupos(edtGrupos.getText().toString());
+
+
 
             contato.setTipoTelefone("");
             contato.setTipoEmail("");
@@ -156,7 +158,7 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
         }
         catch (Exception ex)
         {
-            Toast.makeText(ActivityCadContatos.this, "Erro ao inserir os dados.\nERRO: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityCadContatos.this, "Erro ao inserir os dados. ERRO: " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

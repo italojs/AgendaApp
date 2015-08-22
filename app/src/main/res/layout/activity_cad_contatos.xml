@@ -177,9 +177,9 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
             android:ems="10"
-            android:id="@+id/edtGrupos" />
+            android:id="@+id/edtGrupos"
+            android:inputType="textPersonName" />
 
     </LinearLayout>
 

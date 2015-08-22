@@ -27,6 +27,7 @@ public class RepositorioContato {
     public void inserir (Contato contato)
     {
         ContentValues values = new ContentValues(); //responsavel pela inserção de dados
+
         values.put("NOME", contato.getNome());
         values.put("TELEFONE", contato.getTelefone());
         values.put("TIPOTELEFONE", contato.getTipoTelefone());
@@ -40,6 +41,8 @@ public class RepositorioContato {
 
         con.insertOrThrow("CONTATO", null, values); /*responsavel por inserir os dados e exibir uma mensagem de erro se houver(exemplo, inserir um dado errado em algum campo
                                                     .insert só insere sem dar nenhum aviso*/
+
+
     }
 
     public ArrayAdapter<Contato> buscaContatos(Context context)

@@ -44,8 +44,6 @@ public class ActivityContato extends AppCompatActivity implements View.OnClickLi
 
             repositorioContato = new RepositorioContato(con);
 
-
-
             adpContatos = repositorioContato.buscaContatos(this);
 
             lstContatos.setAdapter(adpContatos); //preenche o ListView com os dados do ArrayAdapter

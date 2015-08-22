@@ -10,7 +10,7 @@ public class DataBase extends SQLiteOpenHelper
     public DataBase(Context context)
     {       //construtor da classe SQLiteOpenHelper
 
-        super(context,"DB_AGENDA", null, 1); //construtor [...](contexto,nome do banco de dados, algo sobre o cursor que eu ão entendi muito bem, numero da versão do BD);
+        super(context,"DB_AGENDA", null, 1); //construtor [...](contexto,nome do banco de dados, algo sobre o cursor que eu não entendi muito bem, numero da versão do BD);
     }
 
 

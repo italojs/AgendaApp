@@ -19,11 +19,10 @@ public class Contato {
     private String tipoDatasEspeciais;
     private String grupos;
 
+    public void Contato (){
 
-    public Contato ()
-    {
+}
 
-    }
     public long getId()
     {
         return id;
