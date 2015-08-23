@@ -1,5 +1,6 @@
 package com.fastcoding.agenda.activities;
 
+import android.app.DatePickerDialog;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import com.fastcoding.agenda.dataBase.DataBase;
 import com.fastcoding.agenda.dominio.RepositorioContato;
 import com.fastcoding.agenda.dominio.entidades.Contato;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ActivityCadContatos extends AppCompatActivity implements View.OnClickListener
@@ -19,7 +22,7 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
 
     private EditText edtNome,edtEmail,edtTelefone,edtEndereco,edtDatasEspeciais,edtGrupos;
 
-    private Spinner spnTipoEmail,spnTipoTelefone,spnTipoEndereco,spnDatasEspeciais;
+    private Spinner spnTipoEmail,spnTipoTelefone,spnTipoEndereco,spnTipoDatasEspeciais;
 
     private ArrayAdapter<String> adpTipoEmail,adpTipoTelefone, adpTipoEndereco,adpDatasEspeciais ;
 
@@ -44,7 +47,7 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
         spnTipoEmail = (Spinner)findViewById(R.id.spnTipoEmail);
         spnTipoTelefone = (Spinner)findViewById(R.id.spnTipoTelefone);
         spnTipoEndereco = (Spinner)findViewById(R.id.spnTipoEndereco);
-        spnDatasEspeciais = (Spinner)findViewById(R.id.spnDatasEspeciais);
+        spnTipoDatasEspeciais = (Spinner)findViewById(R.id.spnDatasEspeciais);
 
         adpTipoEmail = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
         adpTipoEmail.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -61,7 +64,7 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
         spnTipoEmail.setAdapter(adpTipoEmail); //associando o spinner ao ArrayAdapter
         spnTipoTelefone.setAdapter(adpTipoTelefone);
         spnTipoEndereco.setAdapter(adpTipoEndereco);
-        spnDatasEspeciais.setAdapter(adpDatasEspeciais);
+        spnTipoDatasEspeciais.setAdapter(adpDatasEspeciais);
 
         adpTipoEmail.add("Casa");
         adpTipoEmail.add("Trabalho");
@@ -83,6 +86,12 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
         adpDatasEspeciais.add("Aniversário");
         adpDatasEspeciais.add("Data comemorativa");
         adpDatasEspeciais.add("Outros");
+
+        ExibeDataListener exibeDataListener = new ExibeDataListener();
+        edtDatasEspeciais.setOnClickListener(exibeDataListener);
+        edtDatasEspeciais.setOnFocusChangeListener(exibeDataListener);
+
+        contato = new Contato();
 
         try
         {
@@ -133,25 +142,21 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
 
     private void inserir ()
     {
-        try {
-            contato = new Contato();
+        try
+        {
+
 
             contato.setNome(edtNome.getText().toString());
             contato.setTelefone(edtTelefone.getText().toString());
             contato.setEmail(edtEmail.getText().toString());
             contato.setEndereco(edtEndereco.getText().toString());
 
-            Date date = new Date();//não entendi muito bem o porque fazer isso
-            contato.setDatasEspeciais(date);
-
             contato.setGrupos(edtGrupos.getText().toString());
 
-
-
-            contato.setTipoTelefone("");
-            contato.setTipoEmail("");
-            contato.setTipoEndereco("");
-            contato.setTipoDatasEspeciais("");
+            contato.setTipoTelefone(String.valueOf(spnTipoTelefone.getSelectedItemPosition()));//.getSelectedItemPosition() cpega o indice do item selecionado
+            contato.setTipoEmail(String.valueOf(spnTipoEmail.getSelectedItemPosition()));//String.valueOf() é meio que uma conversão
+            contato.setTipoEndereco(String.valueOf(spnTipoEndereco.getSelectedItemPosition()));
+            contato.setTipoDatasEspeciais(String.valueOf(spnTipoDatasEspeciais.getSelectedItemPosition()));
 
 
             repositorioContato.inserir(contato);
@@ -160,7 +165,65 @@ public class ActivityCadContatos extends AppCompatActivity implements View.OnCli
         {
             Toast.makeText(ActivityCadContatos.this, "Erro ao inserir os dados. ERRO: " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
+
     }
+
+    private void exibiData()
+    {
+        Calendar calendar = Calendar.getInstance();
+        int ano =  calendar.get(calendar.YEAR);
+        int mes =  calendar.get(calendar.MONTH);
+        int dia =  calendar.get(calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dlg = new DatePickerDialog(this, new SelecionaDataListener(), ano, mes ,dia); // classe responsavel por abrir uma janela de dialogo para que o usuario possa escolher uma data
+        dlg.show();
+    }
+
+    private class ExibeDataListener implements View.OnClickListener, View.OnFocusChangeListener
+    {
+
+        @Override
+        public void onClick(View v)
+        {
+            exibiData();
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus)
+        {
+            if(hasFocus)
+            {
+                exibiData();
+            }
+
+        }
+
+    }
+
+    private class SelecionaDataListener implements DatePickerDialog.OnDateSetListener //pega o valor da data quando ela é selecionada
+    {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+        {
+
+            Calendar calendar = Calendar.getInstance(); // retona a data do nosso sistema por padrão(hora do aparelho)
+                                                        //.getInstance() meio que cria uma instacia automaticamente, sendo assim,
+                                                        // não necessario o "new" na frente da classe, tenho que estudar um pouco mais sobre isso
+            calendar.set(year, monthOfYear, dayOfMonth);
+            Date data = calendar.getTime();
+
+            DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);//classe responsavel por formatar a data,
+                                                                              // MEDIUM serve para unformar o tamnha da data, se vai ser mais completa ou não
+            String dt = format.format(data);//retorna um objeto do tipo string
+
+            edtDatasEspeciais.setText(dt);// envia data para o componente
+
+            contato.setDatasEspeciais(data);
+
+        }
+
+    }
+
 
     @Override
     public void onClick(View v)

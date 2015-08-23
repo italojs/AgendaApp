@@ -61,13 +61,13 @@ public class ActivityContato extends AppCompatActivity implements View.OnClickLi
     {
 
         Intent it = new Intent(this, ActivityCadContatos.class);
-        startActivityForResult(it, 0);
+        startActivityForResult(it, 0);//startActivityForResult espera um resultado de uma activity que foi chamado
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) { //quando uma activity for fechada, este método é executado(mais ou menos isso)
         super.onActivityResult(requestCode, resultCode, data);
-
+        //atualiza o list view após um cadastro
         adpContatos = repositorioContato.buscaContatos(this);
         lstContatos.setAdapter(adpContatos);
     }
